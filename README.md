@@ -1,47 +1,80 @@
-# 📊 Sales Insight Dashboard – Power BI Project
+# 📊 Sales Insight Dashboard – Power BI & SQL Project
 
-This project demonstrates a **Sales Insight Dashboard** created using Microsoft Power BI. It analyzes multi-dimensional sales data to uncover patterns, trends, and high-value segments. The dashboard serves as a strategic tool for sales and business managers to make data-informed decisions.
+This project demonstrates a **Sales Insight Dashboard** created using **Microsoft Power BI** and **SQL** for data analysis and cleaning. It analyzes multi-dimensional sales data to uncover patterns, trends, and high-value segments. The dashboard serves as a strategic tool for sales and business managers to make data-informed decisions.
 
 ## 🎯 Project Objective
 
-The goal of this project was to:
-- Consolidate and analyze sales data across markets, products, customers, and time.
-- Identify key revenue drivers and top-performing regions.
-- Build a dynamic dashboard to assist in decision-making for stakeholders.
+- Analyze sales data to uncover insights related to performance across markets, products, customers, and time.
+- Build a business-ready dashboard to present key KPIs and trends visually.
+- Use SQL for data extraction, cleaning, and quick aggregations.
 
 ## ❓ Key Business Questions
 
-This project aimed to answer the following business questions:
-1. Which markets generate the highest revenue and sales volume?
-2. What is the monthly/quarterly trend in overall sales revenue?
-3. Who are our top 5 customers by revenue contribution?
-4. What are our best-performing products?
-5. Are there any underperforming areas that require attention?
+1. Which markets generate the highest revenue and sales quantity?
+2. What is the monthly/quarterly trend in sales revenue?
+3. Who are the top 5 customers contributing to revenue?
+4. Which products perform best by sales?
+5. How do sales vary across different years or months?
 
 
 ## 📂 Datasets Used
 - <a href="https://github.com/yadhukrishna361/sales-insight-dashboard-powerbi/blob/main/sales_data1.xlsx">Dataset</a>
 
-## ⚙️ Process & Methodology
+## 🛠️ Data Preparation & Cleaning
 
-1. **Data Cleaning**  
-   - Used Power Query Editor to remove duplicates, fix null values, and ensure data type consistency.
+- Used **SQL** to explore, filter, and clean the data prior to import.
+- Performed joins between fact and dimension tables (e.g., transactions with date).
+- Converted data types, handled currency inconsistencies, and identified null or duplicate records.
 
-2. **Data Modeling**  
-   - Built a **star schema** with `transactions` as the fact table and others as dimension tables.
-   - Defined relationships based on keys (e.g., `CustomerID`, `ProductID`).
+---
 
-3. **Calculated Measures with DAX**  
-   - Revenue: `SUM(Transactions[Revenue])`
-   - Sales Quantity: `SUM(Transactions[Quantity])`
-   - Rank Measures for Top N analysis
+## 🔍 Data Analysis Using SQL
 
-4. **Visualizations**  
-   - KPI cards, column charts, line chart, bar charts, and slicers for interactivity.
-   - Included filters for time, market, and product views.
+Some examples of SQL queries used during the initial data exploration phase:
 
+```sql
+-- 1. Show all customer records
+SELECT * FROM customers;
 
-  ## 📊 Dashboard Features
+-- 2. Count total number of customers
+SELECT count(*) FROM customers;
+
+-- 3. Transactions for Chennai (market code = 'Mark001')
+SELECT * FROM transactions WHERE market_code = 'Mark001';
+
+-- 4. Distinct product codes sold in Chennai
+SELECT DISTINCT product_code FROM transactions WHERE market_code = 'Mark001';
+
+-- 5. Transactions in US Dollars
+SELECT * FROM transactions WHERE currency = 'USD';
+
+-- 6. Transactions in 2020 (with Date join)
+SELECT transactions.*, date.*
+FROM transactions
+INNER JOIN date ON transactions.order_date = date.date
+WHERE date.year = 2020;
+
+-- 7. Total revenue in 2020 (in INR or USD)
+SELECT SUM(transactions.sales_amount)
+FROM transactions
+INNER JOIN date ON transactions.order_date = date.date
+WHERE date.year = 2020 AND (transactions.currency = 'INR' OR transactions.currency = 'USD');
+
+-- 8. Total revenue in Jan 2020
+SELECT SUM(transactions.sales_amount)
+FROM transactions
+INNER JOIN date ON transactions.order_date = date.date
+WHERE date.year = 2020 AND date.month_name = 'January'
+AND (transactions.currency = 'INR' OR transactions.currency = 'USD');
+
+-- 9. Total revenue in 2020 from Chennai
+SELECT SUM(transactions.sales_amount)
+FROM transactions
+INNER JOIN date ON transactions.order_date = date.date
+WHERE date.year = 2020 AND transactions.market_code = 'Mark001';
+```
+
+## 📊 Dashboard Features
 
 - **Total Revenue and Sales Qty** KPIs
 - **Revenue by Markets** (Bar chart)
@@ -63,14 +96,14 @@ This project aimed to answer the following business questions:
 
 ## ✅ Conclusion
 
-This Power BI dashboard successfully provides a clear picture of sales dynamics across key dimensions. It allows users to drill into specific markets, products, and timeframes, enabling data-driven business strategies. Future improvements could include customer segmentation, forecasting models, or integration with live data sources.
-
+This project combines the power of **SQL for backend data cleaning and analysis** with **Power BI for compelling data visualization**. The dashboard helps business teams make strategic decisions based on sales performance, customer segmentation, and regional opportunities.
 ## 🛠️ Tools & Skills Used
 
 - **Power BI Desktop**
 - **Power Query Editor**
 - **Data Modeling (Star Schema)**
 - **DAX (Calculated Measures & KPIs)**
+- **SQL for Data Cleaning & Querying**
 - **Excel/CSV integration**
 - **Data Cleaning & Transformation**
 - **Business Analysis & Reporting**
